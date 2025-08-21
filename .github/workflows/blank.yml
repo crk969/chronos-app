@@ -7,7 +7,7 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-22.04  # Usa una versione compatibile con libncurses5
+    runs-on: ubuntu-22.04
 
     steps:
       - name: Checkout
@@ -36,6 +36,12 @@ jobs:
           python3 -m pip install --upgrade pip
           python3 -m pip install "cython<3.0" buildozer
 
+      - name: Patch buildozer.spec to allow root
+        run: |
+          if grep -q "\[buildozer\]" buildozer.spec; then
+            sed -i '/\[buildozer\]/a allow_root = 1' buildozer.spec
+          fi
+
       - name: Cache Buildozer global directory
         uses: actions/cache@v4
         with:
@@ -47,6 +53,7 @@ jobs:
         uses: ArtemSBulgakov/buildozer-action@v1
         with:
           command: buildozer -v android debug
+          workdir: .
 
       - name: Upload APK as Artifact
         uses: actions/upload-artifact@v4
