@@ -1,0 +1,17 @@
+
+[app]
+title = Chronos Mobile
+package.name = chronos
+package.domain = com.crk969
+source.dir = .
+source.include_exts = py,png,jpg,kv,atlas
+version = 1.0
+requirements = python3,kivy==2.2.1,pandas,openpyxl,Pillow
+orientation = portrait
+icon.filename = %(appdir)s/icon.png
+
+[buildozer]
+log_level = 2
+warn_on_root = 1
+allow_root = 1
+android.api = 33
