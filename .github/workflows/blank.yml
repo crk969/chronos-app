@@ -38,7 +38,8 @@ jobs:
 
       - name: Rigenera buildozer.spec
         run: |
-          echo "[app]
+          cat <<EOF > buildozer.spec
+[app]
 title = Chronos Mobile
 package.name = chronos
 package.domain = com.crk969
@@ -53,7 +54,8 @@ icon.filename = %(appdir)s/icon.png
 log_level = 2
 warn_on_root = 1
 allow_root = 1
-android.api = 33" > buildozer.spec
+android.api = 33
+EOF
 
       - name: Cache Buildozer global directory
         uses: actions/cache@v4
