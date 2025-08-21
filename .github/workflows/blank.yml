@@ -19,12 +19,30 @@ jobs:
           distribution: 'zulu'
           java-version: '11'
       
-      - name: Install system dependencies
+      - name: Install system dependencies for Kivy and Buildozer
         run: |
           sudo apt-get update
-          sudo apt-get install -y python3-pip git zip unzip openjdk-11-jdk python3-venv ant
+          sudo apt-get install -y \
+            git \
+            zip \
+            unzip \
+            build-essential \
+            python3-pip \
+            python3-dev \
+            libsdl2-dev \
+            libsdl2-image-dev \
+            libsdl2-mixer-dev \
+            libsdl2-ttf-dev \
+            libportmidi-dev \
+            libswscale-dev \
+            libavformat-dev \
+            libavcodec-dev \
+            zlib1g-dev \
+            libgstreamer1.0-dev \
+            gstreamer1.0-plugins-base \
+            gstreamer1.0-plugins-good
           
-      - name: Install Buildozer and dependencies
+      - name: Install Python dependencies
         run: |
           python3 -m pip install --upgrade pip
           python3 -m pip install "cython<3.0" buildozer
