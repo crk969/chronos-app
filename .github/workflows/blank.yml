@@ -6,45 +6,35 @@ on:
   workflow_dispatch:
 
 jobs:
-  build:
+  build-android:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout
+      - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Set up Java
+      - name: Set up Java JDK 11
         uses: actions/setup-java@v4
         with:
           distribution: 'zulu'
           java-version: '11'
-
-      - name: Set up Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: '3.9'
-
-      - name: Install dependencies
+      
+      - name: Install system dependencies
         run: |
-          python -m pip install --upgrade pip
-          pip install "cython<3.0"
-          pip install buildozer
-          pip install kivy==2.2.1 pandas openpyxl Pillow
+          sudo apt-get update
+          sudo apt-get install -y python3-pip git zip unzip openjdk-11-jdk python3-venv ant
           
-      - name: Cache Buildozer global directory
-        uses: actions/cache@v4
-        with:
-          path: .buildozer_global
-          key: buildozer-global-v1
+      - name: Install Buildozer and dependencies
+        run: |
+          python3 -m pip install --upgrade pip
+          python3 -m pip install "cython<3.0" buildozer
+          python3 -m pip install kivy==2.2.1 pandas openpyxl Pillow
 
       - name: Build with Buildozer
-        id: buildozer
-        uses: ArtemSBulgakov/buildozer-action@v1
-        with:
-          command: buildozer android debug
+        run: buildozer -v android debug
 
-      - name: Upload Artifact
+      - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
-          name: package
+          name: chronos-mobile-apk
           path: bin/*.apk
