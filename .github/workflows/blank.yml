@@ -19,7 +19,8 @@ jobs:
           distribution: 'zulu'
           java-version: '11'
       
-      - name: Install system dependencies for Kivy and Buildozer
+      - name: Install system dependencies for Kivy & Buildozer
+        # Installa un elenco completo di librerie necessarie per la compilazione di Kivy
         run: |
           sudo apt-get update
           sudo apt-get install -y \
@@ -40,13 +41,28 @@ jobs:
             zlib1g-dev \
             libgstreamer1.0-dev \
             gstreamer1.0-plugins-base \
-            gstreamer1.0-plugins-good
+            gstreamer1.0-plugins-good \
+            libffi-dev \
+            libsqlite3-dev
           
       - name: Install Python dependencies
         run: |
           python3 -m pip install --upgrade pip
-          python3 -m pip install "cython<3.0" buildozer
+          python3 -m pip install "cython<3.0"
+          python3 -m pip install buildozer
+          # Installa le librerie dell'app qui per assicurarsi che siano disponibili
           python3 -m pip install kivy==2.2.1 pandas openpyxl Pillow
+          
+      - name: Initialize and Configure buildozer.spec
+        # Crea il file di configurazione da zero e lo personalizza
+        run: |
+          buildozer init
+          sed -i 's/title = My Application/title = Chronos Mobile/' buildozer.spec
+          sed -i 's/package.name = myapp/package.name = chronos/' buildozer.spec
+          sed -i 's/package.domain = org.test/package.domain = com.crk969/' buildozer.spec
+          sed -i 's/requirements = python3,kivy/requirements = python3,kivy==2.2.1,pandas,openpyxl,Pillow/' buildozer.spec
+          sed -i 's/# android.permissions = INTERNET/android.permissions = WRITE_EXTERNAL_STORAGE,READ_EXTERNAL_STORAGE/' buildozer.spec
+          sed -i 's/# icon.filename = %(appdir)s\/data\/icon.png/icon.filename = %(appdir)s\/icon.png/' buildozer.spec
 
       - name: Build with Buildozer
         run: buildozer -v android debug
