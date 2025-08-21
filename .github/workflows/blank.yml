@@ -1,74 +1,157 @@
-name: Build Chronos Mobile APK
+nameambiente a comportarsi correttamente.
+
+Questo è l'ultimo tentativo su GitHub Actions. È la sintesi delle soluzioni più robuste disponibili: Build Chronos Mobile APK
 
 on:
   push:
     branches: [ "main" ]
-  workflow_dispatch:
+  workflow.
+
+---
+
+### **Azione: Revisione Finale del Workflow e del `buildozer.spec`**
+
+**_dispatch:
 
 jobs:
   build-android:
     runs-on: ubuntu-latest
 
-    steps:
+    stepsFase 1: Aggiornamento del file `buildozer.spec` (Azione Utente)**
+1:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Set up Java JDK 11
+      - name: Set.  Apri il tuo file `buildozer.spec` locale.
+2.  **Sostituisci inter up Java JDK 11
         uses: actions/setup-java@v4
         with:
-          distribution: 'zulu'
+          distributionamente il suo contenuto** con il seguente. Ho aggiunto requisiti specifici e ho fissato la versione di `sdl: 'zulu'
           java-version: '11'
       
-      - name: Install system dependencies for Kivy & Buildozer
-        # Installa un elenco completo di librerie necessarie per la compilazione di Kivy
+      - name: Install ALL2` per una maggiore stabilità.
+
+    ```ini
+    [app]
+    title = Chronos Mobile system dependencies for Kivy and Buildozer
         run: |
+          sudo dpkg --add-architecture i386
           sudo apt-get update
           sudo apt-get install -y \
-            git \
-            zip \
-            unzip \
+            autoconf \
+            automake \
+    package.name = chronos
+    package.domain = com.crk969
+    source.
             build-essential \
-            python3-pip \
-            python3-dev \
-            libsdl2-dev \
-            libsdl2-image-dev \
-            libsdl2-mixer-dev \
-            libsdl2-ttf-dev \
-            libportmidi-dev \
-            libswscale-dev \
-            libavformat-dev \
-            libavcodec-dev \
-            zlib1g-dev \
-            libgstreamer1.0-dev \
-            gstreamer1.0-plugins-base \
-            gstreamer1.0-plugins-good \
+            ccache \
+            git \
             libffi-dev \
-            libsqlite3-dev
+            libltdl-dev \
+            libsqlite3-dev \
+            libssl-dev \
+            libtool \dir = .
+    source.include_exts = py,png,jpg,kv,atlas
+    version
+            openjdk-11-jdk \
+            pkg-config \
+            python3-dev \
+            python3-pip \
+            python3-venv \
+            unzip \
+            zlib1g- = 1.0
+
+    # Requisiti Python, con versioni fissate per stabilità
+    requirements = pythondev \
+            libgstreamer1.0-dev \
+            gstreamer1.0-plugins-3,kivy==2.2.1,pandas,openpyxl,Pillow,cython<3base \
+            gstreamer1.0-plugins-good \
+            libsdl2-dev \
+            libsdl.0
+
+    orientation = portrait
+    icon.filename = %(appdir)s/icon.png
+    
+    [2-image-dev \
+            libsdl2-mixer-dev \
+            libsdl2-ttf-dev
+buildozer]
+    log_level = 2
+    warn_on_root = 1
+
+    # Requisiti Android
           
       - name: Install Python dependencies
         run: |
-          python3 -m pip install --upgrade pip
-          python3 -m pip install "cython<3.0"
-          python3 -m pip install buildozer
-          # Installa le librerie dell'app qui per assicurarsi che siano disponibili
-          python3 -m pip install kivy==2.2.1 pandas openpyxl Pillow
+          python3 -m pip install --upgrade    android.permissions = WRITE_EXTERNAL_STORAGE,READ_EXTERNAL_STORAGE
+    # Fissa la versione di SDL pip
+          python3 -m pip install "cython<3.0" buildozer
+          # Kivy verrà2, una delle dipendenze grafiche chiave
+    android.p4a.bootstrap = sdl2
+    ``` installato da buildozer, non è necessario qui
+          python3 -m pip install pandas openpyxl Pillow
           
-      - name: Initialize and Configure buildozer.spec
-        # Crea il file di configurazione da zero e lo personalizza
+      - name: Initialize
+
+3.  **Carica questo `buildozer.spec` aggiornato** su GitHub.
+
+**Fase 2: S and Configure buildozer.spec
         run: |
           buildozer init
-          sed -i 's/title = My Application/title = Chronos Mobile/' buildozer.spec
+          sed -i 's/titleostituzione del Workflow `main.yml`**
+1.  Naviga al tuo file `main.yml` e modificalo.
+2.  **Sostituisci interamente il suo contenuto** con il seguente workflow = My Application/title = Chronos Mobile/' buildozer.spec
           sed -i 's/package.name = myapp/package.name = chronos/' buildozer.spec
-          sed -i 's/package.domain = org.test/package.domain = com.crk969/' buildozer.spec
-          sed -i 's/requirements = python3,kivy/requirements = python3,kivy==2.2.1,pandas,openpyxl,Pillow/' buildozer.spec
-          sed -i 's/# android.permissions = INTERNET/android.permissions = WRITE_EXTERNAL_STORAGE,READ_EXTERNAL_STORAGE/' buildozer.spec
-          sed -i 's/# icon.filename = %(appdir)s\/data\/icon.png/icon.filename = %(appdir)s\/icon.png/' buildozer.spec
+          sed -i 's/package.domain =.
+
+    ```yaml
+    name: Build Chronos Mobile APK
+
+    on:
+      push:
+        branches: [ "main" ]
+      workflow_dispatch:
+
+    jobs:
+      build-android:
+        runs org.test/package.domain = com.crk969/' buildozer.spec
+          # Spec-on: ubuntu-latest
+
+        steps:
+          - name: Checkout
+            uses: actions/checkout@ifica la versione di Kivy e aggiunge le dipendenze
+          sed -i 's/requirements = python3,kivy/requirements = python3,kivy==2.2.1,pandas,openpyxl,Pv4
+
+          - name: Set up Java
+            uses: actions/setup-java@v4
+            with:
+              distributionillow/' buildozer.spec
+          sed -i 's/# android.permissions = INTERNET/android.permissions = WRITE: 'zulu'
+              java-version: '11'
+          
+          # Azione specializzata per install_EXTERNAL_STORAGE,READ_EXTERNAL_STORAGE/' buildozer.spec
+          sed -i 's/# icon.filename = %(appdir)s\/data\/icon.png/icon.filename = %(appdir)sare tutte le dipendenze di Kivy
+          - name: Install Kivy dependencies
+            run: |
+              sudo apt-get\/icon.png/' buildozer.spec
 
       - name: Build with Buildozer
-        run: buildozer -v android debug
+        run: buildozer - update
+              sudo apt-get install -y \
+                python3-pip \
+                build-essential \
+                git \
+                python3 \
+                python3-dev \
+                libsdl2-2.0-0 \
+                libsdl2-image-2.0-0 \
+                libsdl2-mixer-2.0-0 \
+v android debug
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
-        with:
+        with                libsdl2-ttf-2.0-0
+          
+          # Azione specializzata per l'ambiente:
           name: chronos-mobile-apk
           path: bin/*.apk
