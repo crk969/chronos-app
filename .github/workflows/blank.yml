@@ -2,8 +2,8 @@ name: Build Chronos Mobile APK
 
 on:
   push:
-    branches: [ "main" ] # Si attiva ogni volta che carichi codice sul branch principale
-  workflow_dispatch: # Permette di avviare la build manualmente
+    branches: [ "main" ]
+  workflow_dispatch:
 
 jobs:
   build:
@@ -11,27 +11,22 @@ jobs:
 
     steps:
     - name: Checkout repository
-      uses: actions/checkout@v3
+      uses: actions/checkout@v4
 
     - name: Set up Python
-      uses: actions/setup-python@v4
+      uses: actions/setup-python@v5
       with:
-        python-version: '3.9' # Usiamo una versione stabile per la build
+        python-version: '3.9'
 
-    - name: Install Buildozer and dependencies
+    - name: Install system dependencies
       run: |
         sudo apt-get update
         sudo apt-get install -y python3-pip build-essential git python3-dev libsdl2-2.0-0 libsdl2-image-2.0-0 libsdl2-mixer-2.0-0 libsdl2-ttf-2.0-0
-        pip install --upgrade pip
-        pip install "cython<3.0" # Fissa la versione di Cython per compatibilità
-        pip install buildozer
 
-    - name: Pre-accept Android SDK Licenses
+    - name: Install Python dependencies
       run: |
-        mkdir -p "$ANDROID_SDK_ROOT/licenses"
-        echo "24333f8a63b6825ea9c5514f83c2829b004d1fee" > "$ANDROID_SDK_ROOT/licenses/android-sdk-license"
-        echo "84831b9409646a918e30573bab4c9c91346d8abd" > "$ANDROID_SDK_ROOT/licenses/android-sdk-preview-license"
-        yes | "$ANDROID_SDK_ROOT/cmdline-tools/latest/bin/sdkmanager" --licenses
+        python3 -m pip install --upgrade pip
+        python3 -m pip install "cython<3.0" buildozer
 
     - name: Initialize Buildozer spec file
       run: buildozer init
@@ -44,6 +39,10 @@ jobs:
         sed -i 's/# requirements = python3,kivy/requirements = python3,kivy==2.2.1,pandas,openpyxl,Pillow/' buildozer.spec
         sed -i 's/# android.permissions = INTERNET/android.permissions = WRITE_EXTERNAL_STORAGE,READ_EXTERNAL_STORAGE/' buildozer.spec
         sed -i 's/# icon.filename = %(appdir)s\/data\/icon.png/icon.filename = %(appdir)s\/icon.png/' buildozer.spec
+        
+    - name: Pre-accept Android SDK Licenses
+      run: |
+        yes | $ANDROID_HOME/tools/bin/sdkmanager --licenses
 
     - name: Build the APK
       run: buildozer -v android debug
