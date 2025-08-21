@@ -1,0 +1,48 @@
+name: Build Chronos Mobile APK
+
+on:
+  push:
+    branches: [ "main" ] # Si attiva ogni volta che carichi codice sul branch principale
+  workflow_dispatch: # Permette di avviare la build manualmente
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v3
+
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.9' # Usiamo una versione stabile per la build
+
+    - name: Install Buildozer and dependencies
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y python3-pip build-essential git python3-dev libsdl2-2.0-0 libsdl2-image-2.0-0 libsdl2-mixer-2.0-0 libsdl2-ttf-2.0-0
+        pip install --upgrade pip
+        pip install "cython<3.0" # Fissa la versione di Cython per compatibilità
+        pip install buildozer
+
+    - name: Initialize Buildozer spec file
+      run: buildozer init
+
+    - name: Configure buildozer.spec
+      run: |
+        sed -i 's/title = My Application/title = Chronos Mobile/' buildozer.spec
+        sed -i 's/package.name = myapp/package.name = chronos/' buildozer.spec
+        sed -i 's/package.domain = org.test/package.domain = com.crk969/' buildozer.spec
+        sed -i 's/# requirements = python3,kivy/requirements = python3,kivy==2.2.1,pandas,openpyxl,Pillow/' buildozer.spec
+        sed -i 's/# android.permissions = INTERNET/android.permissions = WRITE_EXTERNAL_STORAGE,READ_EXTERNAL_STORAGE/' buildozer.spec
+        sed -i 's/# icon.filename = %(appdir)s\/data\/icon.png/icon.filename = %(appdir)s\/icon.png/' buildozer.spec
+
+    - name: Build the APK
+      run: buildozer -v android debug
+
+    - name: Upload APK as artifact
+      uses: actions/upload-artifact@v3
+      with:
+        name: chronos-mobile-apk
+        path: bin/*.apk
