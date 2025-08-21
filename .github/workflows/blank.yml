@@ -36,11 +36,24 @@ jobs:
           python3 -m pip install --upgrade pip
           python3 -m pip install "cython<3.0" buildozer
 
-      - name: Patch buildozer.spec to allow root
+      - name: Rigenera buildozer.spec
         run: |
-          if grep -q "\[buildozer\]" buildozer.spec; then
-            sed -i '/\[buildozer\]/a allow_root = 1' buildozer.spec
-          fi
+          echo "[app]
+title = Chronos Mobile
+package.name = chronos
+package.domain = com.crk969
+source.dir = .
+source.include_exts = py,png,jpg,kv,atlas
+version = 1.0
+requirements = python3,kivy==2.2.1,pandas,openpyxl,Pillow
+orientation = portrait
+icon.filename = %(appdir)s/icon.png
+
+[buildozer]
+log_level = 2
+warn_on_root = 1
+allow_root = 1
+android.api = 33" > buildozer.spec
 
       - name: Cache Buildozer global directory
         uses: actions/cache@v4
